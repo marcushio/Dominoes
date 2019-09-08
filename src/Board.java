@@ -6,7 +6,7 @@ import java.util.Collections;
  * @version: 9/5/2019
  */
 public class Board {
-    ArrayList<Tile> boneyard;
+    private ArrayList<Tile> boneyard;
 
 
     public void shuffleBones(){
