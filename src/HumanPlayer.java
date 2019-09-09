@@ -12,11 +12,14 @@ public class HumanPlayer extends Player {
         this.hand = hand;
     }
 
+    public HumanPlayer(){
+        for(int i=0; i <= 7; i++){
+            draw();
+        }
+    }
+
     public void move(){
 
     }
 
-    public void draw(){
-
-    }
 }

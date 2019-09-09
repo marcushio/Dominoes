@@ -7,8 +7,26 @@
  * checking for a win condition.
  */
 public class Main {
+    private Board board;
+    private Player player1;
+    private boolean running;
+
+    public Main(){
+        player1 = new HumanPlayer();
+        running = true;
+    }
+
+    private Tile pullTile(){
+        int random = (int)(Math.random() * Constants.numTiles);
+        Tile pulledTile = board.pullTile(random);
+        return pulledTile; 
+    }
 
     public static void main(String[] args) {
-	    System.out.println("Progress is being made :)");
+        Main controller = new Main();
+        while(controller.running){
+
+        }
+
     }
 }

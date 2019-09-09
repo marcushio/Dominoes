@@ -12,11 +12,10 @@ public abstract class Player {
 
 
     abstract void move();
-    public void draw(){
 
-    };
-    
+    public void addToHand(Tile tile){
+        hand.add(tile);
+    }
+
     public ArrayList<Tile> getHand(){return hand;}
-
-
 }
