@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * @author: Marcus Trujillo
  * @version: 9/5/2019
@@ -8,16 +10,30 @@
  */
 public class Main {
     private Board board;
-    private Player player1;
+    private Player humanPlayer;
+    private Player pcPlayer;
     private boolean running;
 
     public Main(){
-        player1 = new HumanPlayer();
+        board = new Board();
+        ArrayList<Tile> newHand = getNewHand();
+        humanPlayer = new HumanPlayer(newHand);
+        newHand = getNewHand();
+        pcPlayer = new ComputerPlayer(newHand);
         running = true;
     }
 
+    private ArrayList<Tile> getNewHand(){
+        ArrayList<Tile> newHand = new ArrayList<Tile>();
+        for(int i=0; i <= 7; i++){
+            Tile pulledTile = pullTile();
+            newHand.add(pulledTile);
+        }
+        return newHand;
+    }
+
     private Tile pullTile(){
-        int random = (int)(Math.random() * Constants.numTiles);
+        int random = (int)(Math.random() * board.boneyard.size());
         Tile pulledTile = board.pullTile(random);
         return pulledTile; 
     }
