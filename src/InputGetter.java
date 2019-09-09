@@ -8,7 +8,7 @@ import java.util.Scanner;
  */
 public class InputGetter {
 
-    public String getInput(String prompt){
+    public String getStringInput(String prompt){
         String input = "";
         try(Scanner scanner = new Scanner(System.in)){
             System.out.println(prompt);

@@ -5,7 +5,7 @@ import java.util.ArrayList;
  * @version: brief class description
  */
 public class ComputerPlayer extends Player {
-    private ArrayList<Tile> hand;
+    //private ArrayList<Tile> hand;
 
     public ComputerPlayer(ArrayList<Tile> hand){
         this.hand = hand;

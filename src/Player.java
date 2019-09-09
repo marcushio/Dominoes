@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public abstract class Player {
     private String name; //might remove
     private boolean passedLastTurn;
-    private ArrayList<Tile> hand;
+    public ArrayList<Tile> hand;
 
 
     abstract void move();

@@ -12,6 +12,7 @@ public class Main {
     private Board board;
     private Player humanPlayer;
     private Player pcPlayer;
+    private Player currentPlayer;
     private boolean running;
 
     public Main(){
@@ -20,6 +21,7 @@ public class Main {
         humanPlayer = new HumanPlayer(newHand);
         newHand = getNewHand();
         pcPlayer = new ComputerPlayer(newHand);
+        currentPlayer = humanPlayer;
         running = true;
     }
 
@@ -55,9 +57,10 @@ public class Main {
     public static void main(String[] args) {
         Main controller = new Main();
         while(controller.running){
-
+            ArrayList<Tile> hand = controller.currentPlayer.getHand();
+            System.out.println("Your hand... \n" + hand);
             //controller.running = controller.isWin();
-            controller.running = false; 
+            controller.running = false;
         }
     }
 }

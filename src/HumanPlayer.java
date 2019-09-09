@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Represents a human player.
  */
 public class HumanPlayer extends Player {
-    private ArrayList<Tile> hand;
+    //private ArrayList<Tile> hand;
 
     public HumanPlayer(ArrayList<Tile> hand){
         this.hand = hand;
