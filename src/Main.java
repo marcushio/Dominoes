@@ -32,17 +32,32 @@ public class Main {
         return newHand;
     }
 
+    /**
+     * Pull a random tile from the boneyard.
+     * @return
+     */
     private Tile pullTile(){
         int random = (int)(Math.random() * board.boneyard.size());
         Tile pulledTile = board.pullTile(random);
         return pulledTile; 
     }
 
+    /**
+     * Checks to see if a win condition has been met
+     * @return true if a player's hand is empty or the game went pass-pass else false.
+     */
+    private boolean isWin(){
+        if(humanPlayer.handIsEmpty() || pcPlayer.handIsEmpty()) return true;
+        if(humanPlayer.passedTurn() && pcPlayer.passedTurn()) return true;
+        return false;
+    }
+
     public static void main(String[] args) {
         Main controller = new Main();
         while(controller.running){
 
+            //controller.running = controller.isWin();
+            controller.running = false; 
         }
-
     }
 }

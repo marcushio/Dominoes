@@ -16,8 +16,8 @@ public class Board extends Observable {
         for (int i = 0; i < 7; i++){
             for (int j = 6; j >= i; j--){
                 boneyard.add(new Tile(i,j));
-                System.out.println("this is tile " + i +"," + j);
-                System.out.println(boneyard.size());
+                //System.out.println("this is tile " + i +"," + j);
+                //System.out.println(boneyard.size());
             }
         }
         shuffleBones();
