@@ -16,4 +16,6 @@ public class Move {
     }
 
     public int getTileIndex() { return tileIndex; }
+
+    public int getPlayedSide() { return playedSide; }
 }

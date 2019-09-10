@@ -10,6 +10,7 @@ import java.util.Collections;
  * checking for a win condition.
  */
 public class Main {
+    private ConsoleDisplay view;
     private Board board;
     private Player humanPlayer;
     private Player pcPlayer;
@@ -27,6 +28,7 @@ public class Main {
         newHand = getNewHand();
         pcPlayer = new ComputerPlayer(newHand);
         currentPlayer = humanPlayer;
+        view = new ConsoleDisplay();
         running = true;
     }
 
@@ -77,18 +79,18 @@ public class Main {
     public static void main(String[] args) {
         Main controller = new Main();
         while(controller.running){
+            controller.view.printBoard(controller.board.getBoard());
             ArrayList<Tile> hand = controller.currentPlayer.getHand();
             if(controller.currentPlayer instanceof HumanPlayer) System.out.println("Your hand... \n" + hand); //show the human player their hand
             int openTile1 = controller.board.getPlayableNumbers()[0];
             int openTile2 = controller.board.getPlayableNumbers()[1];     //you could probably use some consistency for when you crack into the playablenumbers[]
-            //I think I'll just have players return null if they don't have a move.
-            //if(controller.currentPlayer.hasNoMoves(openTile1, openTile2)) controller.currentPlayer.setPassedTurn(true);  //if current player has no moves then have them pass
             controller.currentMove = controller.currentPlayer.move(controller.board.getPlayableNumbers());
             //check if move is valid. Have players do that.
-            if(controller.currentMove != null)
-                controller.currentPlayer.removeTileFromHand(controller.currentMove.getTileIndex());
-
-            controller.running = controller.isWin();
+            if(controller.currentMove != null) {
+                Tile movedTile = controller.currentPlayer.removeTileFromHand(controller.currentMove.getTileIndex());
+                controller.board.addTile(movedTile, controller.currentMove);
+            }
+            controller.running = !controller.isWin();
             //controller.running = false;
         }
     }

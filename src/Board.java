@@ -8,10 +8,18 @@ import java.util.Observable;
  * @version: 9/5/2019
  */
 public class Board extends Observable {
+    private ArrayList<Tile> board;
     private int playable1 = 0, playable2 = 0;
 
-    public void updateBoard(){
+    public ArrayList<Tile> getBoard() {
+        return board;
+    }
 
+    public void addTile(Tile tile, Move move){
+        //if using playable1 add tile to beginning
+        if(move.getPlayedSide() == playable1){ board.add(0,tile); } //i think i have to add flippabilty
+        else if (move.getPlayedSide() == playable2){ board.add(tile); }
+        //if using playable2 add tile to end
     }
 
     /**

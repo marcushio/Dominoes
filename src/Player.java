@@ -29,8 +29,8 @@ public abstract class Player {
     }
 
 
-    public void removeTileFromHand(int index){
-        hand.remove(index);
+    public Tile removeTileFromHand(int index){
+        return hand.remove(index);
     }
 
     public boolean handIsEmpty(){
