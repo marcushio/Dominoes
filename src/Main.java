@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author: Marcus Trujillo
@@ -13,9 +14,13 @@ public class Main {
     private Player humanPlayer;
     private Player pcPlayer;
     private Player currentPlayer;
+    private Move currentMove;
+    private ArrayList<Tile> boneyard;
     private boolean running;
 
     public Main(){
+        boneyard = new ArrayList<Tile>();
+        fillBoneyard();
         board = new Board();
         ArrayList<Tile> newHand = getNewHand();
         humanPlayer = new HumanPlayer(newHand);
@@ -23,6 +28,21 @@ public class Main {
         pcPlayer = new ComputerPlayer(newHand);
         currentPlayer = humanPlayer;
         running = true;
+    }
+
+    private void fillBoneyard(){
+        boneyard = new ArrayList<Tile>();
+        for (int i = 0; i < 7; i++){
+            for (int j = 6; j >= i; j--){
+                boneyard.add(new Tile(i,j));
+                //System.out.println("this is tile " + i +"," + j);
+                //System.out.println(boneyard.size());
+            }
+        }
+    }
+
+    public void shuffleBones(){
+        Collections.shuffle(boneyard);
     }
 
     private ArrayList<Tile> getNewHand(){
@@ -36,11 +56,11 @@ public class Main {
 
     /**
      * Pull a random tile from the boneyard.
-     * @return
+     * @return the tile that you pulled from the boneyard.
      */
     private Tile pullTile(){
-        int random = (int)(Math.random() * board.boneyard.size());
-        Tile pulledTile = board.pullTile(random);
+        int random = (int)(Math.random() * boneyard.size());
+        Tile pulledTile = boneyard.remove(random);
         return pulledTile; 
     }
 
@@ -58,9 +78,18 @@ public class Main {
         Main controller = new Main();
         while(controller.running){
             ArrayList<Tile> hand = controller.currentPlayer.getHand();
-            System.out.println("Your hand... \n" + hand);
-            //controller.running = controller.isWin();
-            controller.running = false;
+            if(controller.currentPlayer instanceof HumanPlayer) System.out.println("Your hand... \n" + hand); //show the human player their hand
+            int openTile1 = controller.board.getPlayableNumbers()[0];
+            int openTile2 = controller.board.getPlayableNumbers()[1];     //you could probably use some consistency for when you crack into the playablenumbers[]
+            //I think I'll just have players return null if they don't have a move.
+            //if(controller.currentPlayer.hasNoMoves(openTile1, openTile2)) controller.currentPlayer.setPassedTurn(true);  //if current player has no moves then have them pass
+            controller.currentMove = controller.currentPlayer.move(controller.board.getPlayableNumbers());
+            //check if move is valid. Have players do that.
+            if(controller.currentMove != null)
+                controller.currentPlayer.removeTileFromHand(controller.currentMove.getTileIndex());
+
+            controller.running = controller.isWin();
+            //controller.running = false;
         }
     }
 }

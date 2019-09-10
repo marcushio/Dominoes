@@ -13,4 +13,8 @@ public class Tile {
     public String toString(){
         return "[ " + side1 + " | " + side2 + " ]";
     }
+
+    public int getSide1(){ return side1; }
+
+    public int getSide2(){ return side2; }
 }

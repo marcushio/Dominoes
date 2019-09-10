@@ -7,10 +7,19 @@ import java.util.Scanner;
  *
  */
 public class InputGetter {
+    Scanner scanner;
+
+    public InputGetter(){
+        try{
+            scanner = new Scanner(System.in);
+        } catch (Exception ex){
+            System.out.println("We couldn't make the scanner");
+        }
+    }
 
     public String getStringInput(String prompt){
         String input = "";
-        try(Scanner scanner = new Scanner(System.in)){
+        try{
             System.out.println(prompt);
             input = scanner.nextLine();
         } catch (Exception ex){

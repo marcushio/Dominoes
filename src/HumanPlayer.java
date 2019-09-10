@@ -6,23 +6,34 @@ import java.util.ArrayList;
  * Represents a human player.
  */
 public class HumanPlayer extends Player {
-    //private ArrayList<Tile> hand;
+    private InputGetter input;
 
     public HumanPlayer(ArrayList<Tile> hand){
         this.hand = hand;
+        input = new InputGetter();
     }
 
-    /*
-    public HumanPlayer(){
-        for(int i=0; i <= 7; i++){
-            draw();
+    private boolean validMove(Move move, int[] playables){
+        /*
+        int[] playables = board.getPlayableNumbers();
+        if(playables[1] = )*/
+        return false;
+    }
+
+
+    //we're going to need some protections
+    public Move move(int[] playables){
+        if(super.hasMove(playables[0], playables[1])) {
+            int tileIndex = Integer.parseInt(input.getStringInput("Which tile do you want to play?"));
+            int playedSide = Integer.parseInt(input.getStringInput("Which number will you use on this tile?"));
+            Move move = new Move(tileIndex, playedSide);
+            setPassedTurn(false);
+            return move;
+        } else {
+            setPassedTurn(true);
+            return null;
         }
-    }
-     */
 
-    public void move(){
-
-        setPassedTurn(false);
     }
 
 }

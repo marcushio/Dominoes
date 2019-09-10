@@ -12,7 +12,26 @@ public abstract class Player {
     public ArrayList<Tile> hand;
 
 
-    abstract void move();
+    abstract Move move(int[] playables);
+
+    /**
+     *
+     * @param option1
+     * @param option2
+     * @return
+     */
+    public boolean hasMove(int option1, int option2){
+        for(Tile tile: hand){
+            if(tile.getSide1() == option1 || tile.getSide2() == option2) return true;
+            else if(tile.getSide2() == option1 || tile.getSide2() == option2) return true;
+        }
+        return false;
+    }
+
+
+    public void removeTileFromHand(int index){
+        hand.remove(index);
+    }
 
     public boolean handIsEmpty(){
         if(hand.size() == 0) return true;

@@ -8,29 +8,19 @@ import java.util.Observable;
  * @version: 9/5/2019
  */
 public class Board extends Observable {
-    public ArrayList<Tile> boneyard;
     private int playable1 = 0, playable2 = 0;
 
-    public Board(){
-        boneyard = new ArrayList<Tile>();
-        for (int i = 0; i < 7; i++){
-            for (int j = 6; j >= i; j--){
-                boneyard.add(new Tile(i,j));
-                //System.out.println("this is tile " + i +"," + j);
-                //System.out.println(boneyard.size());
-            }
-        }
-        shuffleBones();
+    public void updateBoard(){
+
     }
 
-    //add protection from pulling non-existent tile
-    public Tile pullTile(int index){
-        Tile pulledTile = boneyard.remove(index);
-        return pulledTile;
+    /**
+     * @return an array of size 2 with both of the boards exposed numbers that can be played off of.
+     */
+    public int[] getPlayableNumbers(){
+        int[] playables = new int[2];
+        playables[0] = playable1;
+        playables[1] = playable2;
+        return playables;
     }
-
-    public void shuffleBones(){
-        Collections.shuffle(boneyard);
-    }
-
 }
