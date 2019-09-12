@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.lang.Math;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -11,14 +12,20 @@ public class Board extends Observable {
     private ArrayList<Tile> board;
     private int playable1 = 0, playable2 = 0;
 
+    public Board(){
+        board = new ArrayList<Tile>();
+        playable1 = 0;
+    }
+
     public ArrayList<Tile> getBoard() {
         return board;
     }
 
     public void addTile(Tile tile, Move move){
         //if using playable1 add tile to beginning
-        if(move.getPlayedSide() == playable1){ board.add(0,tile); } //i think i have to add flippabilty
-        else if (move.getPlayedSide() == playable2){ board.add(tile); }
+        if(board.isEmpty()){ board.add(tile); }
+        else if(move.getPlayedSide() == playable1){ board.add(0,tile); } //i think i have to add flippabilty
+        else if (move.getPlayedSide() == playable2){ board.add(tile); } //i could set new numbers on dom or I could make new tile
         //if using playable2 add tile to end
     }
 

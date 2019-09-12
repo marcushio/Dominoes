@@ -12,4 +12,9 @@ public class ConsoleDisplay {
         System.out.println(board);
     }
 
+    public void shiftBoard(){
+        //make the display compatible with our shifted format
+
+    }
+
 }
