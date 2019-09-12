@@ -43,13 +43,9 @@ public class Main {
         }
     }
 
-    public void shuffleBones(){
-        Collections.shuffle(boneyard);
-    }
-
     private ArrayList<Tile> getNewHand(){
         ArrayList<Tile> newHand = new ArrayList<Tile>();
-        for(int i=0; i <= 7; i++){
+        for(int i=0; i < 7; i++){
             Tile pulledTile = pullTile();
             newHand.add(pulledTile);
         }
@@ -66,6 +62,7 @@ public class Main {
         return pulledTile; 
     }
 
+
     /**
      * Checks to see if a win condition has been met
      * @return true if a player's hand is empty or the game went pass-pass else false.
@@ -76,6 +73,11 @@ public class Main {
         return false;
     }
 
+    private void nextPlayer(){
+        if(currentPlayer instanceof HumanPlayer) currentPlayer = pcPlayer;
+        else currentPlayer = humanPlayer;
+    }
+
     public static void main(String[] args) {
         Main controller = new Main();
         while(controller.running){
@@ -84,14 +86,25 @@ public class Main {
             if(controller.currentPlayer instanceof HumanPlayer) System.out.println("Your hand... \n" + hand); //show the human player their hand
             int openTile1 = controller.board.getPlayableNumbers()[0];
             int openTile2 = controller.board.getPlayableNumbers()[1];     //you could probably use some consistency for when you crack into the playablenumbers[]
+            System.out.println("playable1: " + openTile1 + " playable2: " + openTile2);
+            while(!controller.currentPlayer.hasMove(openTile1, openTile2) && !controller.boneyard.isEmpty()){
+                controller.currentPlayer.takeTile(controller.pullTile());
+            }
             controller.currentMove = controller.currentPlayer.move(controller.board.getPlayableNumbers());
-            //check if move is valid. Have players do that.
             if(controller.currentMove != null) {
                 Tile movedTile = controller.currentPlayer.removeTileFromHand(controller.currentMove.getTileIndex());
-                controller.board.addTile(movedTile, controller.currentMove);
+                System.out.println("player played tile: " + movedTile);
+                if(controller.currentMove.getPlayedSide() == controller.board.getPlayable1()){
+                    if(movedTile.getSide1() == controller.board.getPlayable1()) movedTile.flip();
+                    controller.board.addTile(movedTile, 1);
+                } else {
+                    if(movedTile.getSide2() == controller.board.getPlayable2()) movedTile.flip();
+                    controller.board.addTile(movedTile, 2);
+                }
             }
-            controller.running = !controller.isWin();
-            //controller.running = false;
+            if( controller.isWin() ) controller.running = false;
+            controller.nextPlayer();
         }
+        System.out.println("GAME OVER");
     }
 }

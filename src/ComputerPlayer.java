@@ -5,8 +5,6 @@ import java.util.ArrayList;
  * @version: brief class description
  */
 public class ComputerPlayer extends Player {
-    //private ArrayList<Tile> hand;
-
     public ComputerPlayer(ArrayList<Tile> hand){
         this.hand = hand;
     }
@@ -20,6 +18,9 @@ public class ComputerPlayer extends Player {
     public Move move(int[] playables){
         int index = -1;
         int sidePlayed = -1;
+
+        System.out.println("Computer making move");
+        System.out.println("computer's hand: " + hand);
         for(int i =0; i < hand.size(); i++){
             if(hand.get(i).getSide1() == playables[0]){
                 index = i;
@@ -30,6 +31,7 @@ public class ComputerPlayer extends Player {
             }
         }
         if(index == -1){
+            System.out.println("computer has no move");
             setPassedTurn(true);
             return null;
         }

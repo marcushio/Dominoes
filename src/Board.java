@@ -14,19 +14,37 @@ public class Board extends Observable {
 
     public Board(){
         board = new ArrayList<Tile>();
-        playable1 = 0;
     }
 
     public ArrayList<Tile> getBoard() {
         return board;
     }
 
-    public void addTile(Tile tile, Move move){
+    /**
+     *
+     * @param tile
+     * @param endPlayed refers to which end of the board. You can think of the left side as side1 and right as side2
+     */
+    public void addTile(Tile tile, int endPlayed){
         //if using playable1 add tile to beginning
-        if(board.isEmpty()){ board.add(tile); }
-        else if(move.getPlayedSide() == playable1){ board.add(0,tile); } //i think i have to add flippabilty
-        else if (move.getPlayedSide() == playable2){ board.add(tile); } //i could set new numbers on dom or I could make new tile
-        //if using playable2 add tile to end
+        if(board.isEmpty()){
+            System.out.println("empty board");
+            playable1 = tile.getSide1();
+            playable2 = tile.getSide2();
+            board.add(tile);
+        } else if(endPlayed == 1){
+            System.out.println("changing playable1");
+            playable1 = tile.getSide1();
+            System.out.println("we're doing playable1: " + playable1);
+            board.add(0,tile);
+        } else if (endPlayed == 2){
+            System.out.println("changing playable2");
+            playable2 = tile.getSide2();
+            System.out.println("We're doing playable2: " + playable2);
+            board.add(tile);
+        }
+
+        //playable2 = tile.getSide2();
     }
 
     /**
@@ -37,5 +55,13 @@ public class Board extends Observable {
         playables[0] = playable1;
         playables[1] = playable2;
         return playables;
+    }
+
+    public int getPlayable1() {
+        return playable1;
+    }
+
+    public int getPlayable2() {
+        return playable2;
     }
 }

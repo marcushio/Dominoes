@@ -22,8 +22,11 @@ public abstract class Player {
      */
     public boolean hasMove(int option1, int option2){
         for(Tile tile: hand){
-            if(tile.getSide1() == option1 || tile.getSide2() == option2) return true;
-            else if(tile.getSide2() == option1 || tile.getSide2() == option2) return true;
+            int side1 = tile.getSide1();
+            int side2 = tile.getSide2();
+            if(side1 == 0 || side2 ==0) return true;
+            else if(side1 == option1 || side1 == option2) return true;
+            else if(side2 == option1 || side2 == option2) return true;
         }
         return false;
     }
@@ -34,8 +37,15 @@ public abstract class Player {
     }
 
     public boolean handIsEmpty(){
-        if(hand.size() == 0) return true;
-        return false;
+        return hand.isEmpty();
+    }
+
+    /**
+     * takes a tile that was drawn from the boneyard
+     * @param tile
+     */
+    public void takeTile(Tile tile){
+        hand.add(tile);
     }
 
     public boolean passedTurn(){return passedLastTurn;}

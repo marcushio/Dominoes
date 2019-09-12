@@ -20,7 +20,6 @@ public class HumanPlayer extends Player {
         return false;
     }
 
-
     //we're going to need some protections
     public Move move(int[] playables){
         if(super.hasMove(playables[0], playables[1])) {

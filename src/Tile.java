@@ -14,6 +14,12 @@ public class Tile {
         return "[ " + side1 + " | " + side2 + " ]";
     }
 
+    public void flip(){
+        int temp = side1;
+        side1 = side2;
+        side2 = temp;
+    }
+
     public int getSide1(){ return side1; }
 
     public int getSide2(){ return side2; }
