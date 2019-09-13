@@ -70,13 +70,33 @@ public class Main {
      */
     private boolean isWin(){
         if(humanPlayer.passedTurn() && pcPlayer.passedTurn() && boneyard.isEmpty()) return true;
-       // if(pcPlayer.handIsEmpty() && boneyard.isEmpty()) return true;
         return false;
     }
 
+    /**
+     * Passes the turn to the next player by setting current player to the next player.
+     */
     private void nextPlayer(){
         if(currentPlayer instanceof HumanPlayer) currentPlayer = pcPlayer;
         else currentPlayer = humanPlayer;
+    }
+
+    private void printWinner(){
+        ArrayList<Tile> humanFinalHand = humanPlayer.getHand();
+        ArrayList<Tile> pcFinalHand = pcPlayer.getHand();
+        int humanTotal = 0;
+        int pcTotal = 0;
+
+        for(Tile tile : humanFinalHand){
+            humanTotal += tile.getSide1() + tile.getSide2();
+        }
+        for(Tile tile : pcFinalHand){
+            pcTotal += tile.getSide1() + tile.getSide2();
+        }
+        System.out.println("xX Final Score Xx \n You: " + humanTotal + " PC: "+ pcTotal);
+        if(humanTotal < pcTotal) System.out.println("A WINNER IS YOU!");
+        else if(humanTotal > pcTotal ) System.out.println("PC WINS, THE MACHINES ARE TAKING OVER!");
+        else System.out.println("YOUR MIGHTS ARE EVENLY MATCHED, TIE GAME");
     }
 
     public static void main(String[] args) {
@@ -84,15 +104,15 @@ public class Main {
         while(controller.running){
             controller.view.printBoard(controller.board.getBoard());
             ArrayList<Tile> hand = controller.currentPlayer.getHand();
-            if(controller.currentPlayer instanceof HumanPlayer) System.out.println("Your hand... \n" + hand); //show the human player their hand
+
             int openTile1 = controller.board.getPlayableNumbers()[0];
-            int openTile2 = controller.board.getPlayableNumbers()[1];     //you could probably use some consistency for when you crack into the playablenumbers[]
-            System.out.println("playable1: " + openTile1 + " playable2: " + openTile2);
+            int openTile2 = controller.board.getPlayableNumbers()[1];
+            //System.out.println("playable1: " + openTile1 + " playable2: " + openTile2);
             while(!controller.currentPlayer.hasMove(openTile1, openTile2) && !controller.boneyard.isEmpty()){
                 controller.currentPlayer.takeTile(controller.pullTile()); //player is given a random tile from the boneyard
-                System.out.println("Tile Drawn... New Hand...  " + hand);
+                //System.out.println("Tile Drawn... New Hand...  " + hand); this is for showing any players hand
             }
-            // i can probs do a print hand here so I don't get tons of hand print statements
+            if(controller.currentPlayer instanceof HumanPlayer) System.out.println("Your hand... \n" + hand); //show the human player their hand
             controller.currentMove = controller.currentPlayer.move(controller.board.getPlayableNumbers());
             if(controller.currentMove != null) {
                 Tile movedTile = controller.currentPlayer.removeTileFromHand(controller.currentMove.getTileIndex());
@@ -109,5 +129,6 @@ public class Main {
             controller.nextPlayer();
         }
         System.out.println("GAME OVER");
+        controller.printWinner();
     }
 }

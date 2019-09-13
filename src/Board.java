@@ -28,23 +28,16 @@ public class Board extends Observable {
     public void addTile(Tile tile, int endPlayed){
         //if using playable1 add tile to beginning
         if(board.isEmpty()){
-            System.out.println("empty board");
             playable1 = tile.getSide1();
             playable2 = tile.getSide2();
             board.add(tile);
         } else if(endPlayed == 1){
-            System.out.println("changing playable1");
             playable1 = tile.getSide1();
-            System.out.println("we're doing playable1: " + playable1);
             board.add(0,tile);
         } else if (endPlayed == 2){
-            System.out.println("changing playable2");
             playable2 = tile.getSide2();
-            System.out.println("We're doing playable2: " + playable2);
             board.add(tile);
         }
-
-        //playable2 = tile.getSide2();
     }
 
     /**

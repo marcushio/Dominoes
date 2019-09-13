@@ -26,6 +26,7 @@ public abstract class Player {
             int side1 = tile.getSide1();
             int side2 = tile.getSide2();
             if(side1 == 0 || side2 ==0) return true;
+            else if(option1 == 0 || option2 == 0 ) return true;
             else if(side1 == option1 || side1 == option2) return true;
             else if(side2 == option1 || side2 == option2) return true;
         }
