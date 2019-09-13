@@ -115,7 +115,7 @@ public class Main {
             controller.currentMove = controller.currentPlayer.move(controller.board.getPlayableNumbers());
             if(controller.currentMove != null) {
                 Tile movedTile = controller.currentPlayer.removeTileFromHand(controller.currentMove.getTileIndex());
-                System.out.println("player played tile: " + movedTile);
+                controller.view.printTilePlayed(movedTile); //
                 if(controller.currentMove.getPlayedSide() == controller.board.getPlayable1()){
                     if(movedTile.getSide1() == controller.board.getPlayable1()) movedTile.flip();
                     controller.board.addTile(movedTile, 1);
