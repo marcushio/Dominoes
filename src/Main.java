@@ -1,9 +1,8 @@
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author: Marcus Trujillo
- * @version: 9/5/2019
+ * @version: 9/12/2019
  *
  * This is a simple version of dominoes. Check README for full rules.
  * Main handles most of the "game level" logic such as manipulating tiles and placing them on the board, as well as
@@ -84,9 +83,9 @@ public class Main {
     private void printWinner(){
         ArrayList<Tile> humanFinalHand = humanPlayer.getHand();
         ArrayList<Tile> pcFinalHand = pcPlayer.getHand();
+        System.out.println("GAME OVER");
         int humanTotal = 0;
         int pcTotal = 0;
-
         for(Tile tile : humanFinalHand){
             humanTotal += tile.getSide1() + tile.getSide2();
         }
@@ -112,7 +111,7 @@ public class Main {
                 controller.currentPlayer.takeTile(controller.pullTile()); //player is given a random tile from the boneyard
                 //System.out.println("Tile Drawn... New Hand...  " + hand); this is for showing any players hand
             }
-            if(controller.currentPlayer instanceof HumanPlayer) System.out.println("Your hand... \n" + hand); //show the human player their hand
+            if(controller.currentPlayer instanceof HumanPlayer) controller.view.printHand(hand);  //show the human player their hand
             controller.currentMove = controller.currentPlayer.move(controller.board.getPlayableNumbers());
             if(controller.currentMove != null) {
                 Tile movedTile = controller.currentPlayer.removeTileFromHand(controller.currentMove.getTileIndex());
@@ -128,7 +127,6 @@ public class Main {
             if( controller.isWin() ) controller.running = false;
             controller.nextPlayer();
         }
-        System.out.println("GAME OVER");
         controller.printWinner();
     }
 }

@@ -14,6 +14,10 @@ public class ConsoleDisplay {
         System.out.println("*******");
     }
 
+    public void printHand(ArrayList<Tile> hand){
+        System.out.println("Your hand... \n" + hand);
+    }
+    
     public void shiftBoard(){
         //make the display compatible with our shifted format
         //shouldn't be too bad just read through list and alternate which line it prints on.
