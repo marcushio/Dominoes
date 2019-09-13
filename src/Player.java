@@ -21,6 +21,7 @@ public abstract class Player {
      * @return
      */
     public boolean hasMove(int option1, int option2){
+        if(hand.isEmpty()) return false;
         for(Tile tile: hand){
             int side1 = tile.getSide1();
             int side2 = tile.getSide2();

@@ -22,7 +22,7 @@ public class HumanPlayer extends Player {
 
     //we're going to need some protections
     public Move move(int[] playables){
-        if(super.hasMove(playables[0], playables[1])) {
+        if(hasMove(playables[0], playables[1])) {
             int tileIndex = Integer.parseInt(input.getStringInput("Which tile do you want to play?"));
             int playedSide = Integer.parseInt(input.getStringInput("Which number will you use on this tile?"));
             Move move = new Move(tileIndex, playedSide);

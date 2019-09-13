@@ -20,14 +20,16 @@ public class ComputerPlayer extends Player {
         int sidePlayed = -1;
 
         System.out.println("Computer making move");
-        System.out.println("computer's hand: " + hand);
+        System.out.println("computer's hand: " + hand); //this is just for debugging, will not show pc hand
         for(int i =0; i < hand.size(); i++){
-            if(hand.get(i).getSide1() == playables[0]){
+            if(hand.get(i).getSide1() == playables[0] || hand.get(i).getSide1() == 0){
                 index = i;
                 sidePlayed = hand.get(i).getSide1();
-            } else if (hand.get(i).getSide2() == playables[1]){
+                return new Move(index, sidePlayed);
+            } else if (hand.get(i).getSide2() == playables[1] || hand.get(i).getSide2() == 0){
                 index = i;
                 sidePlayed = hand.get(i).getSide2();
+                return new Move(index, sidePlayed);
             }
         }
         if(index == -1){

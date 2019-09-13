@@ -25,6 +25,7 @@ public class Main {
         board = new Board();
         ArrayList<Tile> newHand = getNewHand();
         humanPlayer = new HumanPlayer(newHand);
+        //humanPlayer = new HumanPlayer(new ArrayList<Tile>()); debug see if it's checking for empty hand
         newHand = getNewHand();
         pcPlayer = new ComputerPlayer(newHand);
         currentPlayer = humanPlayer;
@@ -68,8 +69,8 @@ public class Main {
      * @return true if a player's hand is empty or the game went pass-pass else false.
      */
     private boolean isWin(){
-        if(humanPlayer.handIsEmpty() || pcPlayer.handIsEmpty()) return true;
-        if(humanPlayer.passedTurn() && pcPlayer.passedTurn()) return true;
+        if(humanPlayer.passedTurn() && pcPlayer.passedTurn() && boneyard.isEmpty()) return true;
+       // if(pcPlayer.handIsEmpty() && boneyard.isEmpty()) return true;
         return false;
     }
 
@@ -88,8 +89,10 @@ public class Main {
             int openTile2 = controller.board.getPlayableNumbers()[1];     //you could probably use some consistency for when you crack into the playablenumbers[]
             System.out.println("playable1: " + openTile1 + " playable2: " + openTile2);
             while(!controller.currentPlayer.hasMove(openTile1, openTile2) && !controller.boneyard.isEmpty()){
-                controller.currentPlayer.takeTile(controller.pullTile());
+                controller.currentPlayer.takeTile(controller.pullTile()); //player is given a random tile from the boneyard
+                System.out.println("Tile Drawn... New Hand...  " + hand);
             }
+            // i can probs do a print hand here so I don't get tons of hand print statements
             controller.currentMove = controller.currentPlayer.move(controller.board.getPlayableNumbers());
             if(controller.currentMove != null) {
                 Tile movedTile = controller.currentPlayer.removeTileFromHand(controller.currentMove.getTileIndex());
