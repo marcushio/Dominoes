@@ -11,7 +11,7 @@ public class ConsoleDisplay {
         if(board.isEmpty()){ System.out.println("Empty Board "); }
         System.out.println("***BOARD****");
         System.out.println(board);
-        System.out.println("*******\n");
+        System.out.println("*******");
     }
 
     public void shiftBoard(){
