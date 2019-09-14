@@ -20,7 +20,7 @@ public class ComputerPlayer extends Player {
         int sidePlayed = -1;
         setPassedTurn(false);
 
-        System.out.println("Computer making move");
+        //System.out.println("Computer making move");
        // System.out.println("computer's hand: " + hand); //this is just for debugging, will not show pc hand
         for(int i =0; i < hand.size(); i++){
             if(hand.get(i).getSide1() == playables[0] || hand.get(i).getSide1() == 0){

@@ -30,7 +30,7 @@ public class GUI implements Observer {
 
         root.getChildren().addAll(opponentTray, endGameDisplay, boardDisplay, humanTray);
         primaryStage.setTitle("Simple, humble Dominoes!");
-        primaryStage.setScene(new Scene(root, 600, 800));
+        primaryStage.setScene(new Scene(root, 1000, 800));
         primaryStage.show();
     }
 
@@ -43,13 +43,6 @@ public class GUI implements Observer {
         drawOpponentsHand(updatedModel.getPcPlayer().getHand().size());
         drawHand(updatedModel.getHumanPlayer().getHand());
         drawBoard(updatedModel.getBoard().getBoard());
-    }
-
-    /**
-     * draws a new tile onto the board
-     */
-    private void drawTile(){
-
     }
 
     /**
@@ -86,6 +79,7 @@ public class GUI implements Observer {
      * draw board
      */
     public void drawBoard(ArrayList<Tile> board){
+        boardDisplay.getChildren().clear();
         for(Tile tile: board){
             boardDisplay.getChildren().add(new DisplayDomino(tile.getSide1(), tile.getSide2(), 0, handler));
         }

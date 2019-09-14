@@ -46,7 +46,17 @@ public class Controller implements EventHandler {
             if(movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
             model.addTile(movedTile, 2);
         }
-        model.nextPlayer();
+        model.nextPlayersTurn();
+        currentMove = model.currentPlayer.move(model.getBoard().getPlayableNumbers());
+        movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
+        if(currentMove.getPlayedSide() == model.getBoard().getPlayable1()){
+            if(movedTile.getSide1() == model.getBoard().getPlayable1()) movedTile.flip();
+            model.addTile(movedTile, 1);
+        } else {
+            if(movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
+            model.addTile(movedTile, 2);
+        }
+        model.nextPlayersTurn();
     }
 
     /**

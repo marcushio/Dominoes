@@ -18,12 +18,6 @@ public class Model extends Observable {
         humanPlayer = new HumanPlayer(getNewHand());
         pcPlayer = new ComputerPlayer(getNewHand());
         currentPlayer = humanPlayer;
-        /*
-        addObserver(view);
-        setChanged();
-        notifyObservers();
-
-         */
     }
 
     public void addView(GUI view){
@@ -52,12 +46,13 @@ public class Model extends Observable {
      */
     public Player getPcPlayer(){ return pcPlayer; }
 
-    public void nextPlayer(){
+    public void nextPlayersTurn(){
         if(currentPlayer instanceof HumanPlayer) currentPlayer = pcPlayer;
         else currentPlayer = humanPlayer;
         while(!currentPlayer.hasMove(board.getPlayable1(), board.getPlayable2()) && !boneyard.isEmpty()){
             currentPlayer.takeTile(pullTile()); //player is given a random tile from the boneyard
-            //System.out.println("Tile Drawn... New Hand...  " + hand); this is for showing any players hand
+            setChanged();
+            notifyObservers();
         }
     }
 
