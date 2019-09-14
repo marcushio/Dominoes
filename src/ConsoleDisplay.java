@@ -21,10 +21,14 @@ public class ConsoleDisplay {
     public void printTilePlayed(Tile movedTile){
         System.out.println("player played tile: " + movedTile);
     }
-    public void shiftBoard(){
-        //make the display compatible with our shifted format
-        //shouldn't be too bad just read through list and alternate which line it prints on.
 
+    public void printWinner(int humanPoints, int pcPoints){
+        System.out.println("GAME OVER");
+        System.out.println("xX Final Score Xx \n You: " + humanPoints + " PC: "+ pcPoints);
+        if(humanPoints < pcPoints) System.out.println("A WINNER IS YOU!");
+        else if(humanPoints > pcPoints ) System.out.println("PC WINS, THE MACHINES ARE TAKING OVER!");
+        else System.out.println("YOUR MIGHTS ARE EVENLY MATCHED, TIE GAME");
     }
+
 
 }

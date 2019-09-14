@@ -10,10 +10,12 @@ import java.util.Observable;
  */
 public class Board extends Observable {
     private ArrayList<Tile> board;
-    private int playable1 = 0, playable2 = 0;
+    private int playable1, playable2;
 
     public Board(){
         board = new ArrayList<Tile>();
+        playable1 = 0;
+        playable2 = 0;
     }
 
     public ArrayList<Tile> getBoard() {
