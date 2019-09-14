@@ -52,7 +52,7 @@ public class Model extends Observable {
      */
     public Player getPcPlayer(){ return pcPlayer; }
 
-    public void setCurrentPlayer(){
+    public void nextPlayer(){
         if(currentPlayer instanceof HumanPlayer) currentPlayer = pcPlayer;
         else currentPlayer = humanPlayer;
         while(!currentPlayer.hasMove(board.getPlayable1(), board.getPlayable2()) && !boneyard.isEmpty()){

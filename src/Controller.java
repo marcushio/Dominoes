@@ -46,11 +46,8 @@ public class Controller implements EventHandler {
             if(movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
             model.addTile(movedTile, 2);
         }
-
-        model.setCurrentPlayer();
+        model.nextPlayer();
     }
-
-
 
     /**
      * Checks to see if a win condition has been met
@@ -59,13 +56,6 @@ public class Controller implements EventHandler {
     private boolean isWin(Player humanPlayer, Player pcPlayer){
         if(humanPlayer.passedTurn() && pcPlayer.passedTurn() && model.getBoneyard().isEmpty()) return true;
         return false;
-    }
-
-    /**
-     * Passes the turn to the next player by setting current player to the next player.
-     */
-    private void nextPlayer(){
-        model.setCurrentPlayer();
     }
 
     private void checkWinner(HumanPlayer humanPlayer, ComputerPlayer pcPlayer){

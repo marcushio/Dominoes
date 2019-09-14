@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,7 +26,7 @@ public class GUI implements Observer {
         opponentTray = new HBox(3);
         endGameDisplay = new HBox(new Canvas(1,100));
         boardDisplay = new HBox(2, new Canvas(1,500));
-        humanTray = new HBox(3);
+        humanTray = new HBox(5);
 
         root.getChildren().addAll(opponentTray, endGameDisplay, boardDisplay, humanTray);
         primaryStage.setTitle("Simple, humble Dominoes!");
@@ -55,6 +56,8 @@ public class GUI implements Observer {
      * draws the human players hand in the tray
      */
     public void drawHand(ArrayList<Tile> hand){
+        humanTray.getChildren().clear();
+        int temp = humanTray.getChildren().size();
         int indexCounter = 0;
         for(Tile tile: hand){
             DisplayDomino bone = new DisplayDomino(tile.getSide1(), tile.getSide2(), indexCounter, handler);
@@ -68,6 +71,8 @@ public class GUI implements Observer {
      * Draws the opponents hand, user can't see the dots, but you can see how many tiles pc has.
      */
     public void drawOpponentsHand(int handSize){
+        opponentTray.getChildren().clear();
+        int tempo = opponentTray.getChildren().size();
         for(int i = 0; i < handSize; i++){
             Canvas boneBack = new Canvas(80, 40 );
             GraphicsContext gc = boneBack.getGraphicsContext2D();
