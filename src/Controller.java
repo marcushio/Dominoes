@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 
 /**
  * @author: Marcus Trujillo
@@ -32,31 +33,49 @@ public class Controller implements EventHandler {
 
     @Override
     public void handle(Event event){
-        Canvas selected = (Canvas) event.getSource();
-        DisplayDomino selectedBone = (DisplayDomino) selected.getParent();
-        int side = selectedBone.getChildren().indexOf(selected) + 1;
-        Parent boneParent = selectedBone.getParent();
-        int index = boneParent.getChildrenUnmodifiable().indexOf(selectedBone);
-        currentMove = new Move(index, side);
-        Tile movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
-        if(currentMove.getPlayedSide() == model.getBoard().getPlayable1()){
-            if(movedTile.getSide1() == model.getBoard().getPlayable1()) movedTile.flip();
-            model.addTile(movedTile, 1);
+        if(event.getSource() instanceof Button){
+            //normally human move would go here, but they passed in this case
+            model.nextPlayersTurn(); //pc is making his move here
+            currentMove = model.currentPlayer.move(model.getBoard().getPlayableNumbers());
+            Tile movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
+            movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
+            if (currentMove.getPlayedSide() == model.getBoard().getPlayable1()) {
+                if (movedTile.getSide1() == model.getBoard().getPlayable1()) movedTile.flip();
+                model.addTile(movedTile, 1);
+            } else {
+                if (movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
+                model.addTile(movedTile, 2);
+            }
+            model.nextPlayersTurn(); //human draws
         } else {
-            if(movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
-            model.addTile(movedTile, 2);
+            //processing user's move
+            Canvas selected = (Canvas) event.getSource();
+            DisplayDomino selectedBone = (DisplayDomino) selected.getParent();
+            int side = selectedBone.getChildren().indexOf(selected) + 1;
+            Parent boneParent = selectedBone.getParent();
+            int index = boneParent.getChildrenUnmodifiable().indexOf(selectedBone);
+            currentMove = new Move(index, side);
+            Tile movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
+            if (currentMove.getPlayedSide() == model.getBoard().getPlayable1()) {
+                if (movedTile.getSide1() == model.getBoard().getPlayable1()) movedTile.flip();
+                model.addTile(movedTile, 1);
+            } else {
+                if (movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
+                model.addTile(movedTile, 2);
+            }
+            //pc's move
+            model.nextPlayersTurn();
+            currentMove = model.currentPlayer.move(model.getBoard().getPlayableNumbers());
+            movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
+            if (currentMove.getPlayedSide() == model.getBoard().getPlayable1()) {
+                if (movedTile.getSide1() == model.getBoard().getPlayable1()) movedTile.flip();
+                model.addTile(movedTile, 1);
+            } else {
+                if (movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
+                model.addTile(movedTile, 2);
+            }
+            model.nextPlayersTurn();
         }
-        model.nextPlayersTurn();
-        currentMove = model.currentPlayer.move(model.getBoard().getPlayableNumbers());
-        movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
-        if(currentMove.getPlayedSide() == model.getBoard().getPlayable1()){
-            if(movedTile.getSide1() == model.getBoard().getPlayable1()) movedTile.flip();
-            model.addTile(movedTile, 1);
-        } else {
-            if(movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
-            model.addTile(movedTile, 2);
-        }
-        model.nextPlayersTurn();
     }
 
     /**

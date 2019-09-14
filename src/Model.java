@@ -36,9 +36,9 @@ public class Model extends Observable {
      */
     public Player getHumanPlayer(){ return humanPlayer; }
 
-    public ArrayList<Tile> getBoneyard() {
-        return boneyard;
-    }
+    public ArrayList<Tile> getBoneyard() { return boneyard; }
+
+    public Board getBoard(){ return board; }
 
     /**
      *
@@ -49,6 +49,7 @@ public class Model extends Observable {
     public void nextPlayersTurn(){
         if(currentPlayer instanceof HumanPlayer) currentPlayer = pcPlayer;
         else currentPlayer = humanPlayer;
+
         while(!currentPlayer.hasMove(board.getPlayable1(), board.getPlayable2()) && !boneyard.isEmpty()){
             currentPlayer.takeTile(pullTile()); //player is given a random tile from the boneyard
             setChanged();
@@ -89,10 +90,5 @@ public class Model extends Observable {
         setChanged();
         notifyObservers();
     }
-    /**
-     *
-     * @return
-     */
-    public Board getBoard(){ return board; }
 
 }

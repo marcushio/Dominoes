@@ -44,28 +44,11 @@ public class GUI implements Observer {
         drawHand(updatedModel.getHumanPlayer().getHand());
         drawBoard(updatedModel.getBoard().getBoard());
     }
-
-    /**
-     * draws the human players hand in the tray
-     */
-    public void drawHand(ArrayList<Tile> hand){
-        humanTray.getChildren().clear();
-        int temp = humanTray.getChildren().size();
-        int indexCounter = 0;
-        for(Tile tile: hand){
-            DisplayDomino bone = new DisplayDomino(tile.getSide1(), tile.getSide2(), indexCounter, handler);
-            humanTray.getChildren().add(bone);
-            indexCounter++;
-        }
-
-    }
-
     /**
      * Draws the opponents hand, user can't see the dots, but you can see how many tiles pc has.
      */
     public void drawOpponentsHand(int handSize){
         opponentTray.getChildren().clear();
-        int tempo = opponentTray.getChildren().size();
         for(int i = 0; i < handSize; i++){
             Canvas boneBack = new Canvas(80, 40 );
             GraphicsContext gc = boneBack.getGraphicsContext2D();
@@ -74,6 +57,23 @@ public class GUI implements Observer {
             opponentTray.getChildren().add(boneBack);
         }
     }
+    /**
+     * draws the human players hand in the tray
+     */
+    public void drawHand(ArrayList<Tile> hand){
+        humanTray.getChildren().clear();
+        int indexCounter = 0;
+        for(Tile tile: hand){
+            DisplayDomino bone = new DisplayDomino(tile.getSide1(), tile.getSide2(), indexCounter, handler);
+            humanTray.getChildren().add(bone);
+            indexCounter++;
+        }
+    Button passButton = new Button("PASS");
+        passButton.setOnAction(handler);
+    humanTray.getChildren().add(passButton);
+    }
+
+
 
     /**
      * draw board
