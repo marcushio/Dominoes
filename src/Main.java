@@ -35,7 +35,9 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         view = new GUI(primaryStage);
         controller = new Controller();
-        model = new Model(view, new HumanPlayer(controller.getNewHand()), new ComputerPlayer(controller.getNewHand()));
+        model = new Model(view);
         controller.addModel(model);
+        view.addHandler(controller);
+        model.addView(view);
     }
 }

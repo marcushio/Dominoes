@@ -1,6 +1,8 @@
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
@@ -12,10 +14,14 @@ import javafx.scene.paint.Color;
 public class DisplayDomino extends HBox {
     private final int WIDTH = 40, HEIGHT = 40, CENTERX = WIDTH/2, CENTERY = HEIGHT/2;
     Canvas side1, side2;
+    int index = -1;
 
-    public DisplayDomino(int leftSide, int rightSide){
+    public DisplayDomino(int leftSide, int rightSide, int index, Controller handler){
+        this.index = index;
         side1 = paintSide(leftSide, 1);
+        side1.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
         side2 = paintSide(rightSide, 2);
+        side2.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
         this.getChildren().addAll(side1, side2);
     }
 

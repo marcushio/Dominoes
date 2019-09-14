@@ -18,30 +18,30 @@ public class GUI implements Observer {
     private HBox endGameDisplay;
     private HBox boardDisplay;
     private HBox humanTray;
+    private Controller handler; //will be handling all events from GUI
 
     public GUI(Stage primaryStage){
         root = new VBox(10);
         opponentTray = new HBox(3);
-
-        //drawOpponentsHand(pcHand.size());
-        endGameDisplay = new HBox();
-        boardDisplay = new HBox(2);
-        DisplayDomino testBone = new DisplayDomino(1,1);
+        endGameDisplay = new HBox(new Canvas(1,100));
+        boardDisplay = new HBox(2, new Canvas(1,500));
         humanTray = new HBox(3);
-        humanTray.getChildren().add(testBone);
-        //drawHand(humanHand);
 
         root.getChildren().addAll(opponentTray, endGameDisplay, boardDisplay, humanTray);
         primaryStage.setTitle("Simple, humble Dominoes!");
-        primaryStage.setScene(new Scene(root, 600, 550));
+        primaryStage.setScene(new Scene(root, 600, 800));
         primaryStage.show();
+    }
+
+    public void addHandler(Controller controller){
+        this.handler = controller;
     }
 
     public void update(Observable model, Object arg){
         Model updatedModel = (Model) model;
         drawOpponentsHand(updatedModel.getPcPlayer().getHand().size());
         drawHand(updatedModel.getHumanPlayer().getHand());
-        drawBoard(updatedModel.getBoard());
+        drawBoard(updatedModel.getBoard().getBoard());
     }
 
     /**
@@ -55,9 +55,11 @@ public class GUI implements Observer {
      * draws the human players hand in the tray
      */
     public void drawHand(ArrayList<Tile> hand){
+        int indexCounter = 0;
         for(Tile tile: hand){
-            DisplayDomino bone = new DisplayDomino(tile.getSide1(), tile.getSide2());
+            DisplayDomino bone = new DisplayDomino(tile.getSide1(), tile.getSide2(), indexCounter, handler);
             humanTray.getChildren().add(bone);
+            indexCounter++;
         }
 
     }
@@ -79,7 +81,9 @@ public class GUI implements Observer {
      * draw board
      */
     public void drawBoard(ArrayList<Tile> board){
-
+        for(Tile tile: board){
+            boardDisplay.getChildren().add(new DisplayDomino(tile.getSide1(), tile.getSide2(), 0, handler));
+        }
     }
 
 }

@@ -9,13 +9,24 @@ public class Model extends Observable {
     private Board board;
     private Player humanPlayer;
     private Player pcPlayer;
-    private Player currentPlayer;
+    public Player currentPlayer;
+    private ArrayList<Tile> boneyard;
 
-    public Model(GUI view, HumanPlayer human, ComputerPlayer pc){
+    public Model(GUI view ){
+        fillBoneyard();
         board = new Board();
-        humanPlayer = human;
-        pcPlayer = pc;
+        humanPlayer = new HumanPlayer(getNewHand());
+        pcPlayer = new ComputerPlayer(getNewHand());
         currentPlayer = humanPlayer;
+        /*
+        addObserver(view);
+        setChanged();
+        notifyObservers();
+
+         */
+    }
+
+    public void addView(GUI view){
         addObserver(view);
         setChanged();
         notifyObservers();
@@ -31,6 +42,10 @@ public class Model extends Observable {
      */
     public Player getHumanPlayer(){ return humanPlayer; }
 
+    public ArrayList<Tile> getBoneyard() {
+        return boneyard;
+    }
+
     /**
      *
      * @return
@@ -40,22 +55,49 @@ public class Model extends Observable {
     public void setCurrentPlayer(){
         if(currentPlayer instanceof HumanPlayer) currentPlayer = pcPlayer;
         else currentPlayer = humanPlayer;
+        while(!currentPlayer.hasMove(board.getPlayable1(), board.getPlayable2()) && !boneyard.isEmpty()){
+            currentPlayer.takeTile(pullTile()); //player is given a random tile from the boneyard
+            //System.out.println("Tile Drawn... New Hand...  " + hand); this is for showing any players hand
+        }
     }
 
+    public ArrayList<Tile> getNewHand(){
+        ArrayList<Tile> newHand = new ArrayList<Tile>();
+        for(int i=0; i < 7; i++){
+            Tile pulledTile = pullTile();
+            newHand.add(pulledTile);
+        }
+        return newHand;
+    }
+
+    /**
+     * Pull a random tile from the boneyard.
+     * @return the tile that you pulled from the boneyard.
+     */
+    private Tile pullTile(){
+        int random = (int)(Math.random() * boneyard.size());
+        Tile pulledTile = boneyard.remove(random);
+        return pulledTile;
+    }
+
+    private void fillBoneyard(){
+        boneyard = new ArrayList<Tile>();
+        for (int i = 0; i < Main.STARTING_HAND_SIZE; i++){
+            for (int j = 6; j >= i; j--){
+                boneyard.add(new Tile(i,j));
+            }
+        }
+    }
+
+    public void addTile(Tile tile, int sidePlayed){
+        board.addTile(tile, sidePlayed );
+        setChanged();
+        notifyObservers();
+    }
     /**
      *
      * @return
      */
-    public ArrayList<Tile> getBoard(){ return board.getBoard(); }
-
-    /**
-     * takes the players move from the controller and updates the board accordingly.
-     * @param move
-     */
-    public void update(Move move){
-
-        setChanged();
-        notifyObservers();
-    }
+    public Board getBoard(){ return board; }
 
 }
