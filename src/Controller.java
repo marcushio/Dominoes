@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -15,11 +16,8 @@ import javafx.scene.control.Button;
  */
 
 public class Controller implements EventHandler {
-    //private ConsoleDisplay view;
     private Model model;
-    //private Player currentPlayer;
     private Move currentMove;
-
 
     public Controller(){
 
@@ -29,24 +27,29 @@ public class Controller implements EventHandler {
         this.model = model;
     }
 
-
+    
 
     @Override
     public void handle(Event event){
         if(event.getSource() instanceof Button){
-            //normally human move would go here, but they passed in this case
-            model.nextPlayersTurn(); //pc is making his move here
-            currentMove = model.currentPlayer.move(model.getBoard().getPlayableNumbers());
-            Tile movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
-            movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
-            if (currentMove.getPlayedSide() == model.getBoard().getPlayable1()) {
-                if (movedTile.getSide1() == model.getBoard().getPlayable1()) movedTile.flip();
-                model.addTile(movedTile, 1);
+            if(model.currentPlayer.hasMove(model.getBoard().getPlayable1(), model.getBoard().getPlayable2())){
+                model.setStateMessage("YOU HAVE MOVES, YOU CAN'T PASS");
             } else {
-                if (movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
-                model.addTile(movedTile, 2);
+                model.currentPlayer.setPassedTurn(true);//normally human move would go here, but they passed in this case
+                model.nextPlayersTurn(); //set to pc's turn
+                //pc is making his move here
+                currentMove = model.currentPlayer.move(model.getBoard().getPlayableNumbers());
+                Tile movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
+                movedTile = model.currentPlayer.removeTileFromHand(currentMove.getTileIndex());
+                if (currentMove.getPlayedSide() == model.getBoard().getPlayable1()) {
+                    if (movedTile.getSide1() == model.getBoard().getPlayable1()) movedTile.flip();
+                    model.addTile(movedTile, 1);
+                } else {
+                    if (movedTile.getSide2() == model.getBoard().getPlayable2()) movedTile.flip();
+                    model.addTile(movedTile, 2);
+                }
+                model.nextPlayersTurn(); //human draws
             }
-            model.nextPlayersTurn(); //human draws
         } else {
             //processing user's move
             Canvas selected = (Canvas) event.getSource();
@@ -75,6 +78,8 @@ public class Controller implements EventHandler {
                 model.addTile(movedTile, 2);
             }
             model.nextPlayersTurn();
+            boolean isWin = isWin(model.getHumanPlayer(), model.getPcPlayer());
+            if(isWin) checkWinner(model.getHumanPlayer(), model.getPcPlayer());
         }
     }
 
@@ -87,7 +92,7 @@ public class Controller implements EventHandler {
         return false;
     }
 
-    private void checkWinner(HumanPlayer humanPlayer, ComputerPlayer pcPlayer){
+    private void checkWinner(Player humanPlayer, Player pcPlayer){
         ArrayList<Tile> humanFinalHand = humanPlayer.getHand();
         ArrayList<Tile> pcFinalHand = pcPlayer.getHand();
         int humanTotal = 0;
@@ -98,6 +103,9 @@ public class Controller implements EventHandler {
         for(Tile tile : pcFinalHand){
             pcTotal += tile.getSide1() + tile.getSide2();
         }
+        if (humanTotal < pcTotal) model.setStateMessage("A WINNER IS YOU! CONGRATULATIONS");
+        else if (humanTotal > pcTotal) model.setStateMessage("EGAD, THE MACHINES ARE TAKING OVER, PC WINS");
+        else model.setStateMessage("YOUR MIGHT HAS BEEN MATCHED, TIE GAME");
         //view.printWinner(humanTotal, pcTotal);
     }
 

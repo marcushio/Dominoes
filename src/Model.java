@@ -10,9 +10,12 @@ public class Model extends Observable {
     private Player humanPlayer;
     private Player pcPlayer;
     public Player currentPlayer;
+    private String stateMessage;
     private ArrayList<Tile> boneyard;
 
     public Model(GUI view ){
+        stateMessage = "SELECT WHICH MOVE YOU WANT TO MAKE BY CLICKING THE END OF THE TILE YOU ";
+        stateMessage += "WANT TO USE. E.g. I want to use the 1 in [1 | 2], I'll click the 1 end";
         fillBoneyard();
         board = new Board();
         humanPlayer = new HumanPlayer(getNewHand());
@@ -46,9 +49,19 @@ public class Model extends Observable {
      */
     public Player getPcPlayer(){ return pcPlayer; }
 
+    public void setStateMessage(String message){
+        stateMessage = message;
+        setChanged();
+        notifyObservers();
+    }
+
+    public String getStateMessage(){ return stateMessage; }
+
     public void nextPlayersTurn(){
-        if(currentPlayer instanceof HumanPlayer) currentPlayer = pcPlayer;
-        else currentPlayer = humanPlayer;
+        if(currentPlayer instanceof HumanPlayer) {
+            currentPlayer = pcPlayer;
+            setStateMessage("PC's turn... now drawing");
+        } else currentPlayer = humanPlayer;
 
         while(!currentPlayer.hasMove(board.getPlayable1(), board.getPlayable2()) && !boneyard.isEmpty()){
             currentPlayer.takeTile(pullTile()); //player is given a random tile from the boneyard
