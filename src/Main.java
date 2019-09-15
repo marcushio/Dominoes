@@ -33,11 +33,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
-        view = new GUI(primaryStage);
+        model = new Model();
         controller = new Controller();
-        model = new Model(view);
         controller.addModel(model);
-        view.addHandler(controller);
+        view = new GUI(primaryStage, controller);
+        //view.addHandler(controller);
         model.addView(view);
     }
 }

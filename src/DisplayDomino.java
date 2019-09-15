@@ -16,12 +16,12 @@ public class DisplayDomino extends HBox {
     Canvas side1, side2;
     int index = -1;
 
-    public DisplayDomino(int leftSide, int rightSide, int index, Controller handler){
+    public DisplayDomino(int leftSide, int rightSide, int index, Controller controller){
         this.index = index;
-        side1 = paintSide(leftSide, 1);
-        side1.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
-        side2 = paintSide(rightSide, 2);
-        side2.addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
+        side1 = paintSide(leftSide, 0);
+        side1.addEventHandler(MouseEvent.MOUSE_CLICKED, controller.new TileHandler());
+        side2 = paintSide(rightSide, 1);
+        side2.addEventHandler(MouseEvent.MOUSE_CLICKED, controller.new TileHandler());
         this.getChildren().addAll(side1, side2);
     }
 
@@ -68,8 +68,8 @@ public class DisplayDomino extends HBox {
         }
         gc.setStroke(Color.BLACK);
         gc.strokeRect(0,0,WIDTH,HEIGHT);
-        if(side == 1) gc.strokeLine(WIDTH,0,WIDTH,HEIGHT);
-        else if(side == 2) gc.strokeLine(1,0,1,40);
+        if(side == 0) gc.strokeLine(WIDTH,0,WIDTH,HEIGHT);
+        else if(side == 1) gc.strokeLine(1,0,1,40);
         return dominoSide;
     }
 }

@@ -7,13 +7,13 @@ import java.util.Observable;
  */
 public class Model extends Observable {
     private Board board;
-    private Player humanPlayer;
-    private Player pcPlayer;
+    public HumanPlayer humanPlayer;
+    public ComputerPlayer pcPlayer;
     public Player currentPlayer;
     private String stateMessage;
     private ArrayList<Tile> boneyard;
 
-    public Model(GUI view ){
+    public Model(){
         stateMessage = "SELECT WHICH MOVE YOU WANT TO MAKE BY CLICKING THE END OF THE TILE YOU ";
         stateMessage += "WANT TO USE. E.g. I want to use the 1 in [1 | 2], I'll click the 1 end";
         fillBoneyard();
@@ -42,9 +42,9 @@ public class Model extends Observable {
     public ArrayList<Tile> getBoneyard() { return boneyard; }
 
     public Board getBoard(){ return board; }
+    public String getStateMessage(){ return stateMessage; }
 
     /**
-     *
      * @return
      */
     public Player getPcPlayer(){ return pcPlayer; }
@@ -55,15 +55,22 @@ public class Model extends Observable {
         notifyObservers();
     }
 
-    public String getStateMessage(){ return stateMessage; }
+    public void setSelectedTile(int index, int sideSelected){
+        humanPlayer.setTileSelected(index, sideSelected);
+        setChanged();
+        notifyObservers();
+    }
 
-    public void nextPlayersTurn(){
+    public void setCurrentPlayer(){
         if(currentPlayer instanceof HumanPlayer) {
             currentPlayer = pcPlayer;
             setStateMessage("PC's turn... now drawing");
         } else currentPlayer = humanPlayer;
+        setStateMessage("Human's Turn");
+    }
 
-        while(!currentPlayer.hasMove(board.getPlayable1(), board.getPlayable2()) && !boneyard.isEmpty()){
+    public void currentPlayerDraws(){
+        while(!currentPlayer.hasMove(board.getPlayable0(), board.getPlayable1()) && !boneyard.isEmpty()){
             currentPlayer.takeTile(pullTile()); //player is given a random tile from the boneyard
             setChanged();
             notifyObservers();
@@ -98,10 +105,46 @@ public class Model extends Observable {
         }
     }
 
-    public void addTile(Tile tile, int sidePlayed){
-        board.addTile(tile, sidePlayed );
+    public void addTile(Tile tile, int boardSidePlayed){
+        board.addTile(tile, boardSidePlayed);
         setChanged();
-        notifyObservers();
+        notifyObservers(this);
+    }
+
+    public void moveHuman(int boardSide){ //board side is 0 for left 1 for right
+        int boardNumber = board.getPlayableNumbers()[boardSide];
+        if(humanPlayer.canMove(boardNumber)){
+            Tile playedTile = humanPlayer.pullSelectedTile();
+            //flip tile if necessary
+            if(boardSide == 0 && playedTile.getSelectedSide() == 0){
+                playedTile.flip();
+            } else if(boardSide == 1 && playedTile.getSelectedSide() == 1){
+                playedTile.flip();
+            }
+            addTile(playedTile, boardSide);
+            System.out.println("board " + board.getBoard());
+        } else setStateMessage("That's not a valid move, try again");
+
+    }
+
+    public void pcMoves(){
+        currentPlayerDraws();
+        Move currentMove = pcPlayer.move(getBoard().getPlayableNumbers());
+        if(currentMove != null) {
+            Tile playedTile = pcPlayer.removeTileFromHand(currentMove.getTileIndex());
+            if(currentMove.boardSide == 0 && currentMove.dominoSide == 0){
+                playedTile.flip();
+            } else if(currentMove.boardSide == 1 && currentMove.dominoSide == 1){
+                playedTile.flip();
+            }
+            addTile(playedTile, currentMove.boardSide);
+            System.out.println("board" + board.getBoard());
+            setChanged();
+            notifyObservers();
+        } else {
+            setStateMessage("PC Had no move");
+            currentPlayer.setPassedTurn(true);
+        }
     }
 
 }

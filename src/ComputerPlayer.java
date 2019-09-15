@@ -21,41 +21,40 @@ public class ComputerPlayer extends Player {
         int sidePlayed = -1;
         setPassedTurn(false);
 
-        //System.out.println("Computer making move");
-       // System.out.println("computer's hand: " + hand); //this is just for debugging, will not show pc hand
+        System.out.println("Computer making move");
+        System.out.println("computer's hand: " + hand);
+        //this is just for debugging, will not show pc hand
         for(int i =0; i < hand.size(); i++){
-            if(hand.get(i).getSide1() == playables[0] || hand.get(i).getSide1() == 0){
+            if(hand.get(i).getSide0() == playables[0]){
                 index = i;
-                sidePlayed = hand.get(i).getSide1();
-                return new Move(index, sidePlayed);
-            } else if (hand.get(i).getSide1() == playables[1]){
+                return new Move(index, 0, 0);
+            } else if (hand.get(i).getSide0() == playables[1]){
                 index = i;
-                sidePlayed = hand.get(i).getSide1();
-                return new Move(index, sidePlayed);
-            } else if (hand.get(i).getSide2() == playables[0] || hand.get(i).getSide2() == 0){
+                return new Move(index, 0, 1);
+            } else if (hand.get(i).getSide1() == playables[0]){
                 index = i;
-                sidePlayed = hand.get(i).getSide2();
-                return new Move(index, sidePlayed);
-            }else if (hand.get(i).getSide2() == playables[1]) {
+                return new Move(index, 1, 0);
+            }else if (hand.get(i).getSide1() == playables[1]) {
                 index = i;
-                sidePlayed = hand.get(i).getSide2();
-                return new Move(index, sidePlayed);
+                return new Move(index, 1,1);
             } else if (playables[0] == 0){
                 index = i;
-                sidePlayed = hand.get(i).getSide2();
-                return new Move(index, sidePlayed);
+                return new Move(index, 0, 0);
             } else if (playables[1] == 0){
                 index = i;
-                sidePlayed = hand.get(i).getSide1();
-                return new Move(index, sidePlayed);
+                sidePlayed = hand.get(i).getSide0();
+                return new Move(index, sidePlayed, 1);
+            } else if(hand.get(i).getSide0() == 0){
+                return  new Move(i, 0, 1);
+            } else if(hand.get(i).getSide1() == 0){
+                return  new Move(i, 1, 0);
             }
         }
         if(index == -1){
-            System.out.println("computer has no move");
             setPassedTurn(true);
             return null;
         }
         setPassedTurn(false);
-        return new Move(index, sidePlayed);
+        return new Move(index, sidePlayed, 1);
     }
 }

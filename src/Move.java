@@ -5,15 +5,19 @@
  * specifying which side they are using to play off the board.
  */
 public class Move {
-    public int tileIndex;
-    public int playedSide;
+    public int tileIndex; //index in players hand
+    public int dominoSide;//0 is the left 1 is the right
+    public int boardSide; //0 is the left 1 is the right
 
-    public Move(int tileIndex, int playedSide){
+    public Move(int tileIndex, int tileSide, int boardSide){
         this.tileIndex = tileIndex;
-        this.playedSide = playedSide;
+        this.dominoSide = tileSide;
+        this.boardSide = boardSide;
     }
 
     public int getTileIndex() { return tileIndex; }
 
-    public int getPlayedSide() { return playedSide; }
+    public int getDominoSide() { return dominoSide; }
+
+    public int getBoardSide() { return boardSide; }
 }

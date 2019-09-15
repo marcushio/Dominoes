@@ -1,4 +1,3 @@
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,35 +9,48 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 public class GUI implements Observer {
     private VBox root;
     private HBox opponentTray;
+    private HBox boardDisplay;
     private HBox messageDisplay;
     private HBox topBoardDisplay;
     private HBox bottomBoardDisplay;
     private HBox humanTray;
-    private Controller handler; //will be handling all events from GUI
+    private Controller controller; //will be handling all events from GUI
 
-    public GUI(Stage primaryStage){
+    public GUI(Stage primaryStage, Controller controller){
+        this.controller = controller;
         root = new VBox(10);
         opponentTray = new HBox(3);
         messageDisplay = new HBox(new Canvas(1,100));
-        topBoardDisplay = new HBox(10, new Canvas(1,39));
-        bottomBoardDisplay = new HBox(10, new Canvas(1,39));
+        boardDisplay = new HBox(20);
+        addBoardDisplayChildren();
         humanTray = new HBox(5);
-
-        root.getChildren().addAll(opponentTray, messageDisplay, topBoardDisplay, bottomBoardDisplay, humanTray);
+        root.getChildren().addAll(opponentTray, messageDisplay, boardDisplay, humanTray);
         primaryStage.setTitle("Simple, humble, Dominoes!");
         primaryStage.setScene(new Scene(root, 1600, 700));
         primaryStage.show();
     }
 
+    private void addBoardDisplayChildren(){
+        Button leftButton = new Button("LEFT");
+        leftButton.setOnAction(controller.new LeftButtonHandler());
+        VBox boardDisplays = new VBox();
+        topBoardDisplay = new HBox(5);
+        bottomBoardDisplay = new HBox(5);
+        boardDisplays.getChildren().addAll(topBoardDisplay, bottomBoardDisplay);
+        Button rightButton = new Button("RIGHT");
+        rightButton.setOnAction((controller.new RightButtonHandler()));
+        boardDisplay.getChildren().addAll(leftButton, boardDisplays, rightButton);
+
+    }
+
     public void addHandler(Controller controller){
-        this.handler = controller;
+        this.controller = controller;
     }
 
     public void update(Observable model, Object arg){
@@ -65,17 +77,28 @@ public class GUI implements Observer {
     /**
      * draws the human players hand in the tray
      */
-    public void drawHand(ArrayList<Tile> hand){
+   public void drawHand(ArrayList<Tile> hand){
         humanTray.getChildren().clear();
         //humanTray.getChildren().add(new Canvas(40,40));
         int indexCounter = 0;
         for(Tile tile: hand){
-            DisplayDomino bone = new DisplayDomino(tile.getSide1(), tile.getSide2(), indexCounter, handler);
+            DisplayDomino bone = new DisplayDomino(tile.getSide0(), tile.getSide1(), indexCounter, controller);
+            if(tile.isSelected()){
+                if(tile.getSelectedSide() == 0){
+                    GraphicsContext gc = bone.side1.getGraphicsContext2D();
+                    gc.setFill(Color.BLUE);
+                    gc.strokeRect(2,2,36,36);
+                } else if(tile.getSelectedSide() == 1){
+                    GraphicsContext gc = bone.side2.getGraphicsContext2D();
+                    gc.setFill(Color.BLUE);
+                    gc.strokeRect(2,2,36,36);
+                }
+            }
             humanTray.getChildren().add(bone);
             indexCounter++;
         }
         Button passButton = new Button("PASS");
-        passButton.setOnAction(handler);
+        passButton.setOnAction(controller.new PassButtonHandler());
         humanTray.getChildren().add(passButton);
     }
 
@@ -94,9 +117,9 @@ public class GUI implements Observer {
         int counter = 0;
         for(Tile tile: board){
             if(counter++%2 == 0) {
-                topBoardDisplay.getChildren().add(new DisplayDomino(tile.getSide1(), tile.getSide2(), 0, handler));
+                topBoardDisplay.getChildren().add(new DisplayDomino(tile.getSide0(), tile.getSide1(), 0, controller));
             } else {
-                bottomBoardDisplay.getChildren().add(new DisplayDomino(tile.getSide1(), tile.getSide2(), 0, handler));
+                bottomBoardDisplay.getChildren().add(new DisplayDomino(tile.getSide0(), tile.getSide1(), 0, controller));
             }
         }
     }
