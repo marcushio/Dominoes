@@ -12,7 +12,7 @@ public abstract class Player {
     public ArrayList<Tile> hand;
 
 
-    abstract Move move(int[] playables);
+    //abstract boolean canMove(int[] playables);
 
     /**
      *
@@ -23,8 +23,8 @@ public abstract class Player {
     public boolean hasMove(int option1, int option2){
         if(hand.isEmpty()) return false;
         for(Tile tile: hand){
-            int side1 = tile.getSide1();
-            int side2 = tile.getSide2();
+            int side1 = tile.getSide0();
+            int side2 = tile.getSide1();
             if(side1 == 0 || side2 ==0) return true;
             else if(option1 == 0 || option2 == 0 ) return true;
             else if(side1 == option1 || side1 == option2) return true;
@@ -32,7 +32,6 @@ public abstract class Player {
         }
         return false;
     }
-
 
     public Tile removeTileFromHand(int index){
         return hand.remove(index);
