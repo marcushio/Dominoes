@@ -37,8 +37,8 @@ public class Main {
         for (int i = 0; i < 7; i++){
             for (int j = 6; j >= i; j--){
                 boneyard.add(new Tile(i,j));
-                //System.out.println("this is tile " + i +"," + j);
-                //System.out.println(boneyard.size());
+                //System.out.println("this is tile " + i +"," + j); //debug statements
+                //System.out.println(boneyard.size()); //debug
             }
         }
     }
@@ -69,6 +69,8 @@ public class Main {
      */
     private boolean isWin(){
         if(humanPlayer.passedTurn() && pcPlayer.passedTurn() && boneyard.isEmpty()) return true;
+        else if(humanPlayer.handIsEmpty() && boneyard.isEmpty()) return true;
+        else if(pcPlayer.handIsEmpty() && boneyard.isEmpty()) return true;
         return false;
     }
 
