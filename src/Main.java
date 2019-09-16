@@ -7,9 +7,9 @@ import java.util.ArrayList;
  * @author: Marcus Trujillo
  * @version: 9/13/2019
  *
- * This is a simple version of dominoes. Check README for full rules.
- * Main handles most of the "game level" logic such as manipulating tiles and placing them on the board, as well as
- * checking for a win condition.
+ * This is a simple version of dominoes. Where you try to match any tiles in your hand with one of the two exposed ends.
+ * Check README for full rules.
+ *
  */
 public class Main extends Application {
     public static final int STARTING_HAND_SIZE = 7;

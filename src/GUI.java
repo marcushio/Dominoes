@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * @author Marcus Trujillo
+ * @version 9/14/2019
+ *
+ * This is the GUI for our game, it observes changes made on the model (board, players etc) and displays those
+ * changes as the model notifies it.
+ */
 public class GUI implements Observer {
     private VBox root;
     private HBox opponentTray;
@@ -22,6 +29,11 @@ public class GUI implements Observer {
     private HBox humanTray;
     private Controller controller; //will be handling all events from GUI
 
+    /**
+     * set all the nodes in the stage
+     * @param primaryStage
+     * @param controller
+     */
     public GUI(Stage primaryStage, Controller controller){
         this.controller = controller;
         root = new VBox(10);
@@ -32,10 +44,13 @@ public class GUI implements Observer {
         humanTray = new HBox(5);
         root.getChildren().addAll(opponentTray, messageDisplay, boardDisplay, humanTray);
         primaryStage.setTitle("Simple, humble, Dominoes!");
-        primaryStage.setScene(new Scene(root, 1600, 700));
+        primaryStage.setScene(new Scene(root, 1500, 700));
         primaryStage.show();
     }
 
+    /**
+     * helper method to add all children to the board display Hbox
+     */
     private void addBoardDisplayChildren(){
         Button leftButton = new Button("LEFT");
         leftButton.setOnAction(controller.new LeftButtonHandler());
@@ -49,10 +64,20 @@ public class GUI implements Observer {
 
     }
 
+    /**
+     * Adds the central object that event handling will be routed to. In my program
+     * I had nested classes that did the handling within the controller.
+     * @param controller
+     */
     public void addHandler(Controller controller){
         this.controller = controller;
     }
 
+    /**
+     * allows the GUI to change it's appearance to reflect any new information in the model.
+     * @param model a copy of the model so the gui can display it's info
+     * @param arg not used here, it's an artifact of the built in java library
+     */
     public void update(Observable model, Object arg){
         Model updatedModel = (Model) model;
         drawOpponentsHand(updatedModel.getPcPlayer().getHand().size());
@@ -102,13 +127,17 @@ public class GUI implements Observer {
         humanTray.getChildren().add(passButton);
     }
 
+    /**
+     * writes the message display
+     * @param model
+     */
     public void writeMessageDisplay(Model model){
         messageDisplay.getChildren().clear();
         messageDisplay.getChildren().add(new Label(model.getStateMessage()));
     }
 
     /**
-     * draw board
+     * draw board, the playing area.
      */
     public void drawBoard(ArrayList<Tile> board){
         topBoardDisplay.getChildren().clear();
@@ -123,5 +152,4 @@ public class GUI implements Observer {
             }
         }
     }
-
 }

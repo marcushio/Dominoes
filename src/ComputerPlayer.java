@@ -2,10 +2,15 @@ import java.util.ArrayList;
 
 /**
  * @author: Marcus Trujillo
- * @version: brief class description
+ * @version: 9/13/2019
+ * This class is in charge of handling all computer moves, the player that the human goes up against.
  */
 public class ComputerPlayer extends Player {
 
+    /**
+     * Constructor simply get's a starting hand.
+     * @param hand computer players starting hand
+     */
     public ComputerPlayer(ArrayList<Tile> hand){
         this.hand = hand;
     }
@@ -21,9 +26,6 @@ public class ComputerPlayer extends Player {
         int sidePlayed = -1;
         setPassedTurn(false);
 
-        System.out.println("Computer making move");
-        System.out.println("computer's hand: " + hand);
-        //this is just for debugging, will not show pc hand
         for(int i =0; i < hand.size(); i++){
             if(hand.get(i).getSide0() == playables[0]){
                 index = i;
